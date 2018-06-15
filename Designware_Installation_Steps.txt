@@ -1,0 +1,270 @@
+ mkdir $db/verif/arun_ocp
+ $DESIGNWARE_HOME/bin/dw_vip_setup
+ $DESIGNWARE_HOME/bin/dw_vip_setup -i home
+ $DESIGNWARE_HOME/bin/dw_vip_setup -info home:ocp_vrt
+ pushd $db/verif/arun_ocp/
+ $DESIGNWARE_HOME/bin/dw_vip_setup -path /nfs/fm/disks/fm_avs_00137/anellurx/ecc_1122/verif/arun_ocp -add ocp_system_env_sv_svt -v L-2016.06
+ $DESIGNWARE_HOME/bin/dw_vip_setup -path /nfs/fm/disks/fm_avs_00137/anellurx/ecc_1122/verif/arun_ocp -example ocp_vrt/tb_ocp_vrt_ovm_basic_sys
+ cd examples/
+ cd svtb/
+ cd ocp_vrt/
+ cd tb_ocp_vrt_ovm_basic_sys/
+ vi README
+ ./run_ocp_vrt_ovm_basic_sys
+ ./run_ocp_vrt_ovm_basic_sys -waves -verbose random_wr_rd_test vcsvlog
+
+
+
+
+
+===========================================
+fmci202761 > $DESIGNWARE_HOME/bin/dw_vip_setup 
+
+#---------------------------------------------------------------------#
+# Synopsys VIP Setup; Copyright(C) 1994-2016 Synopsys, Inc.           #
+#---------------------------------------------------------------------#
+
+ERROR:  No switches were specified.
+
+Usage:  dw_vip_setup <cntrlswitch>... <opswitch>
+
+
+        <cntrlswitch> is one of the following control switches:
+
+        -help
+            Specifies the usage of this tool.
+
+        -p/ath <design_dir>
+            Identifies the design directory path <design_dir>.  This switch is 
+            optional.  Default is the current working directory.
+
+        -vera
+            Enable Vera compilation to allow running Vera based examples using
+            Vera (non-native) mode.  Setting the environment variable VERA_HOME
+            or VRO_CACHE_DIR also forces Vera compilation to be enabled.
+
+        -use_vrt
+            Instructs the tool to reference the VRT based models and/or examples if
+            both SVT and VRT versions of the same model exist within the same
+            VIP installation.
+
+        -supp_vera_options "<vera_options>"
+            Specify supplemental compile options to be used by Vera during .vro
+            generation.  This switch is only accepted when VRO_CACHE_DIR is set.
+            Supplemental options specified on the setup command line should be
+            enclosed in quotes to protect embedded whitespace.  
+
+        -m/odel_list <filename>
+            Specifies a file name which contains a list of model names to be added, 
+            updated or removed in the design directory.  This switch is only valid
+            when following an operation switch such as -add, -update or -remove.  Only
+            one model name per line and each model may include a version selector.
+            The default version is 'latest'.  This switch is optional, but if given
+            the filename argument is required.  Lines in the file starting with the
+            pound symbol (#) will be ignored.
+
+        -s/uite_list <filename>
+            Specifies a file name which contains a list of suite names to be added,
+            updated or removed in the design directory.  This switch is only valid
+            when following an operation switch such as -add, -update or -remove.  Only
+            one suite name per line and each suite may include a version selector.
+            The default version is 'latest'.  This switch is optional, but if given
+            the filename argument is required.  Lines in the file starting with the
+            pound symbol (#) will be ignored.
+
+        <opswitch> is one of the following operation switches:
+
+        -e/xample <scenario> | <model_name>/<scenerio> [-v/ersion <version>]
+            Prepare an example testbench for a model or a suite testbench for a 
+            group of models.  Creates a simulator run script for the example 
+            scenario.  Automatically setup all models needed for that scenario 
+            by reading the scenario's modellist file.  Model specific scenarios 
+            must be preceded by '<model_name>/'.  Performs the equivalent of the 
+            '-add' switch for all models specified by the scenario's modellist 
+            for nonmodel specific examples.  If no version is specified, latest 
+            version will be used.  Use the '-info' switch to list all available 
+            examples.  The generated simulator run script supports all Vera supported 
+            simulators.  The user is responsible for setting the appropriate 
+            simulator specific environment variables.
+
+        -c/lean <scenario> | <model_name>/<scenerio> 
+            Return an example testbench for a model or a suite testbench to it's
+            pre-simulation state.
+
+        -a/dd [ <model> [-v/ersion <version>] [<model> [-v/ersion <version>]] ... ]
+            Requires either a list of model/version pairs or the model_list switch.  
+            If no version is specified for any given model, latest version is 
+            assumed.  Adds the specified models to the specified design directory.
+            Also builds missing vro files for all specified models, suite libraries
+            from which the models reside, and the VMT library itself. 
+
+        -u/pdate [ <model> [-v/ersion <version>] [<model> [-v/ersion <version>]] ... ]
+            Requires either a list of model/version pairs or the model_list switch.  
+            If no version is specified for any given model, latest version is 
+            assumed.  Updates model versions in the specified design directory for
+            specified models.  Also builds missing vro files for all specified models,
+            suite libraries from which the models reside, and the VMT library itself. 
+
+        -r/emove [ <model> ... ]
+            Requires either a list of models or the model_list switch.  Any model 
+            versions included in the model list file are ignored.  Removes the 
+            specified models from the specified design directory.  Does not attempt
+            to find or remove any vro files or include files used solely by the 
+            specified models.
+
+        -i/nfo design | home[:<product>[:<version>[:<methodology>]]]
+            Generate an informational report on a design directory or 
+            VIP installation.  
+
+            design:  If the '-info design' switch is specified, the tool displays
+                     product and version content within the specified design directory
+                     to standard output.  This output can be captured and used as a
+                     modellist file for input to this tool to create another design
+                     directory with the same content.
+
+            home:    If the '-info home' switch is specified, the tool displays 
+                     product, version and example content within the VIP installation
+                     to standard output.  Optional filter fields can also be specified
+                     such as <product>, <version> and <methodology> delimited by
+                     colons (:).  An error will be reported if a nonexistent or invalid
+                     filter field is specified.  Valid methodology names include:
+                     OVM, RVM, UVM, VMM and VLOG.
+
+        -b/ridge
+            Update the specified design directory to reference the current
+            VIP installation.  All product versions contained in the design
+            directory must also exist in the current VIP installation.
+
+        -doc
+            Creates a doc directory in the specified design directory which is populated
+            with symbolic links to the DESIGNWARE_HOME installation for documents related
+            to the given model or example being added or updated.
+
+        -methodology <name>
+            When specified with -doc, only documents associated with the specified
+            methodology name are added to the design directory.  Valid methodology
+            names include: OVM, RVM, UVM, VMM and VLOG. 
+
+        -copy
+            When specified with -doc, documents are copied into the design directory,
+            not linked.
+
+
+        NOTE:  Either the VC_HOME or DESIGNWARE_HOME environment variable must be set to
+               successfully run the setup tool.  The VERA_HOME environment variable must
+               also be set if none of the -ntb, -svtb or -svlog switches are specified.
+
+
+        Example invocations:
+
+            dw_vip_setup -path design_dir -add ahb_master_vmt -v J-2014.12 ahb_slave_vmt -v J-2014.12
+            dw_vip_setup -path design_dir -example ahb_slave_vmt/basic
+            dw_vip_setup -path design_dir -example apb_sys
+            dw_vip_setup -path design_dir -example pcie_sys -v J-2014.12-SP2
+            dw_vip_setup -path design_dir -example mipi_svt/tb_uvm_basic_example -v J-2014.12-SP2 -doc -svlog
+            dw_vip_setup -path design_dir -remove ahb_monitor_vmt
+            dw_vip_setup -path design_dir -add -model_list ./modellistfile
+            dw_vip_setup -path design_dir -update ahb_master_vmt -v latest
+            dw_vip_setup -path design_dir -add -suite_list ./suitelistfile
+            dw_vip_setup -info home:usb_svt:J-2014.12-SP3-1:uvm
+
+        Sample model_list file:
+
+            mphy_agent_svt -v K-2015.09-1
+            mphy_monitor_svt -v K-2015.09-1
+            mphy_txrx_svt -v K-2015.09-1
+            i2c_master_svt
+            i2c_slave_svt
+
+        Sample suite_list file:
+
+            pcie_svt -v J-2014.12-SP3
+            amba_svt
+            mipi_svt
+
+
+    
+fmci202761 > $DESIGNWARE_HOME/bin/dw_vip_setup  -info home:ocp_vrt
+
+#---------------------------------------------------------------------#
+# Synopsys VIP Setup; Copyright(C) 1994-2016 Synopsys, Inc.           #
+#---------------------------------------------------------------------#
+
+
+#---------------------------------------------------------------------#
+# DESIGNWARE_HOME = /p/hdk/rtl/cad/x86-64_linux26/synopsys/designware/L-2016.03-3-T0720-2-3-patch5
+#
+# Using vmt version 3.90b
+# Using vrt version L-2016.06
+# Using svt version L-2016.06
+#---------------------------------------------------------------------#
+
+
+# LIBRARIES:
+# ocp_vrt L-2016.06
+
+# MODELS:
+# ocp_coherent_master_svt L-2016.06
+# ocp_coherent_slave_svt L-2016.06
+# ocp_master_agent_sv_svt L-2016.06
+# ocp_master_sv_svt L-2016.06
+# ocp_master_svt L-2016.06
+# ocp_monitor_sv_svt L-2016.06
+# ocp_monitor_svt L-2016.06
+# ocp_slave_agent_sv_svt L-2016.06
+# ocp_slave_sv_svt L-2016.06
+# ocp_slave_svt L-2016.06
+# ocp_system_env_sv_svt L-2016.06
+
+# EXAMPLES:
+# ocp20_sys_vmm
+# ocp21_sys_vmm
+# ocp22_sys_vmm
+# ocp_sys_vmm_advanced
+# ocp_sys_vmm_advanced_extended
+# ocp_sys_vmm_subenv
+# ocp_vmm_lab1
+# ocp_vmm_lab1_solution
+# ocp_vmm_lab2
+# ocp_vmm_lab2_solution
+# ocp_vmm_lab3
+# ocp_vmm_lab3_solution
+# ocp_vmm_lab4
+# ocp_vmm_lab4_solution
+# ocp_vmm_lab5
+# ocp_vmm_lab5_solution
+# ocp_vmm_lab6
+# ocp_vmm_lab6_solution
+# ocp_vmm_lab7
+# ocp_vmm_lab7_solution
+# ocp_vmm_lab8
+# ocp_vmm_lab8_solution
+# ocp_vmm_lab9
+# ocp_vmm_lab9_solution
+# ocp20_sys_vlog
+# ocp21_sys_vlog
+# ocp22_sys_vlog
+# ocp30_coh_mstr_slv_sys_vlog
+# ocp30_sys_vlog
+# ocp_ip_bfms
+# ocp_sys_vlog_high_speed_profile
+# ocp20_sys_vhdl
+# ocp21_sys_vhdl
+# ocp22_sys_vhdl
+# ocp30_sys_vhdl
+# ocp_vrt/tb_ocp_vmm_10_advanced_sys
+# ocp_vrt/tb_ocp_vmm_10_basic_sys
+# ocp_vrt/tb_ocp_vmm_10_intermediate_non_compliant_supp_sys
+# ocp_vrt/tb_ocp_vmm_10_intermediate_ocp30_sys
+# ocp_vrt/tb_ocp_vmm_10_intermediate_sys
+# ocp_vrt/tb_ocp_vmm_cache_coherent_sys
+# ocp_vrt/tb_ocp_vmm_coherent_master_sys
+# ocp_vrt/tb_ocp_vmm_coherent_sys
+# ocp_vrt/tb_ocp_vrt_ovm_basic_sys
+# ocp_vrt/tb_ocp_vrt_uvm_basic_program_sys
+# ocp_vrt/tb_ocp_vrt_uvm_basic_sys
+
+#---------------------------------------------------------------------#
+# The 'info' operation has successfully completed.
+#---------------------------------------------------------------------#
+
